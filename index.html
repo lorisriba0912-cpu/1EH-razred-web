@@ -1,44 +1,870 @@
-<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>1.EH</title>
-<style>body{font-family:Arial;margin:0;background:#f4f7f2;color:#17351e}header{background:#28643a;color:#fff;text-align:center;padding:25px}nav{text-align:center;background:#fff;padding:10px}button{padding:10px 15px;margin:4px;border:0;border-radius:9px;background:#28643a;color:white}main{max-width:1000px;margin:auto;padding:15px}.card{background:white;padding:20px;margin:15px 0;border-radius:14px;box-shadow:0 2px 10px #0001}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.hidden{display:none}input,textarea{width:100%;padding:10px;margin:5px 0 12px;box-sizing:border-box}img{max-width:100%;border-radius:10px}@media(max-width:700px){.grid{grid-template-columns:1fr}}</style></head>
-<body><header><h1>1.EH</h1><div>Cvjećari i poljoprivredni gospodarstvenici</div></header>
-<nav><button onclick="go('home')">Početna</button><button onclick="go('raspored')">Raspored</button><button onclick="go('pravila')">Razredna pravila</button><button onclick="go('zadaća')">Domaća zadaća</button><button onclick="go('obavijesti')">Obavijesti</button><button onclick="go('admin')">Admin</button></nav>
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1.EH</title>
+
+<style>
+body{
+font-family:Arial;margin:0;background:#f4f7f2;color:#17351e
+}
+header{
+background:#28643a;color:#fff;text-align:center;padding:25px
+}
+nav{
+text-align:center;background:#fff;padding:10px
+}
+button{
+padding:10px 15px;margin:4px;border:0;border-radius:9px;
+background:#28643a;color:white;cursor:pointer
+}
+button:hover{opacity:.9}
+main{max-width:1000px;margin:auto;padding:15px}
+.card{
+background:white;padding:20px;margin:15px 0;border-radius:14px;
+box-shadow:0 2px 10px #0001
+}
+.grid{
+display:grid;grid-template-columns:1fr 1fr;gap:15px
+}
+.gallery{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px
+}
+.gallery-item{
+background:white;
+padding:10px;
+border-radius:12px;
+box-shadow:0 2px 8px #0002
+}
+.gallery-item img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:10px
+}
+.hidden{display:none}
+input,textarea{
+width:100%;padding:10px;margin:5px 0 12px;
+box-sizing:border-box
+}
+img{max-width:100%;border-radius:10px}
+
+@media(max-width:700px){
+.grid{grid-template-columns:1fr}
+.gallery{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>1.EH</h1>
+<div>Cvjećari i poljoprivredni gospodarstvenici</div>
+</header>
+
+<nav>
+<button onclick="go('home')">Početna</button>
+<button onclick="go('raspored')">Raspored</button>
+<button onclick="go('pravila')">Razredna pravila</button>
+<button onclick="go('zadaća')">Domaća zadaća</button>
+<button onclick="go('obavijesti')">Obavijesti</button>
+<button onclick="go('galerija')">📸 Galerija</button>
+<button onclick="go('admin')">Admin</button>
+</nav>
+
 <main>
-<section id="home" class="card page"><h2>Dobro došli!</h2><p id="intro">1.EH je mali razred s 9 učenika cvjećara i poljoprivrednih gospodarstvenika.</p></section>
-<section id="raspored" class="page hidden"><div class="card"><h2>Raspored sati</h2><div class="grid"><div class="card"><h3>1.E</h3><div id="e">Raspored još nije dodan.</div></div><div class="card"><h3>1.H</h3><div id="h">Raspored još nije dodan.</div></div></div></div></section>
-<section id="pravila" class="card page hidden"><h2>Razredna pravila</h2><div id="rules"></div></section>
-<section id="zadaća" class="card page hidden"><h2>Domaća zadaća</h2><div id="hw"></div></section>
-<section id="obavijesti" class="card page hidden"><h2>Obavijesti</h2><div id="news"></div></section>
-<section id="admin" class="page hidden"><div id="login" class="card"><h2>Admin prijava</h2><input id="u" placeholder="Korisničko ime"><input id="p" type="password" placeholder="Lozinka"><button onclick="login()">Prijava</button><p id="msg"></p></div>
-<div id="panel" class="hidden"><div class="card"><h2>Admin</h2><button onclick="logout()">Odjava</button></div>
-<div class="card"><h3>Početna</h3><textarea id="introEdit"></textarea><button onclick="saveIntro()">Spremi</button></div>
-<div class="card"><h3>Raspored</h3><p>Do 20 MB po slici.</p><input id="fe" type="file" accept="image/*"><input id="fh" type="file" accept="image/*"><button onclick="addSchedules()">➕ Dodaj raspored</button><p id="up"></p></div>
-<div class="card"><h3>Razredna pravila</h3><input id="rt" placeholder="Novo pravilo"><button onclick="addRule()">Dodaj</button><div id="ar"></div></div>
-<div class="card"><h3>Domaća zadaća</h3><input id="ht" placeholder="Naslov"><textarea id="hx" placeholder="Tekst"></textarea><button onclick="addHw()">Dodaj</button><div id="ah"></div></div>
-<div class="card"><h3>Obavijesti</h3><input id="nt" placeholder="Naslov"><textarea id="nx" placeholder="Tekst"></textarea><button onclick="addNews()">Dodaj</button><div id="an"></div></div></div></section>
+
+<section id="home" class="card page">
+<h2>Dobro došli!</h2>
+<p id="intro">
+1.EH je mali razred s 9 učenika cvjećara i poljoprivrednih gospodarstvenika.
+</p>
+</section>
+
+<section id="raspored" class="page hidden">
+<div class="card">
+<h2>Raspored sati</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>1.E</h3>
+<div id="e">Raspored još nije dodan.</div>
+</div>
+
+<div class="card">
+<h3>1.H</h3>
+<div id="h">Raspored još nije dodan.</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="pravila" class="card page hidden">
+<h2>Razredna pravila</h2>
+<div id="rules"></div>
+</section>
+
+<section id="zadaća" class="card page hidden">
+<h2>Domaća zadaća</h2>
+<div id="hw"></div>
+</section>
+
+<section id="obavijesti" class="card page hidden">
+<h2>Obavijesti</h2>
+<div id="news"></div>
+</section>
+
+<section id="galerija" class="card page hidden">
+<h2>📸 Galerija</h2>
+<p>Fotografije našeg razreda</p>
+<div id="gallery" class="gallery">
+Galerija je prazna.
+</div>
+</section>
+
+<section id="admin" class="page hidden">
+
+<div id="login" class="card">
+<h2>Admin prijava</h2>
+
+<input id="u" placeholder="Korisničko ime">
+<input id="p" type="password" placeholder="Lozinka">
+
+<button onclick="login()">Prijava</button>
+
+<p id="msg"></p>
+</div>
+
+<div id="panel" class="hidden">
+
+<div class="card">
+<h2>⚙️ Admin</h2>
+<button onclick="logout()">Odjava</button>
+</div>
+
+<div class="card">
+<h3>Početna</h3>
+
+<textarea id="introEdit"></textarea>
+
+<button onclick="saveIntro()">Spremi</button>
+</div>
+
+<div class="card">
+<h3>📅 Raspored</h3>
+
+<p>Do 20 MB po slici.</p>
+
+<input id="fe" type="file" accept="image/*">
+<input id="fh" type="file" accept="image/*">
+
+<button onclick="addSchedules()">➕ Dodaj raspored</button>
+
+<p id="up"></p>
+</div>
+
+<div class="card">
+<h3>📸 Galerija</h3>
+
+<p>Možeš odabrati više fotografija odjednom.</p>
+
+<input id="galleryFiles" type="file" accept="image/*" multiple>
+
+<button onclick="addGallery()">➕ Dodaj fotografije</button>
+
+<p id="galleryUp"></p>
+
+<div id="adminGallery"></div>
+
+</div>
+
+<div class="card">
+<h3>Razredna pravila</h3>
+
+<input id="rt" placeholder="Novo pravilo">
+
+<button onclick="addRule()">Dodaj</button>
+
+<div id="ar"></div>
+</div>
+
+<div class="card">
+<h3>Domaća zadaća</h3>
+
+<input id="ht" placeholder="Naslov">
+
+<textarea id="hx" placeholder="Tekst"></textarea>
+
+<button onclick="addHw()">Dodaj</button>
+
+<div id="ah"></div>
+</div>
+
+<div class="card">
+<h3>Obavijesti</h3>
+
+<input id="nt" placeholder="Naslov">
+
+<textarea id="nx" placeholder="Tekst"></textarea>
+
+<button onclick="addNews()">Dodaj</button>
+
+<div id="an"></div>
+</div>
+
+</div>
+</section>
+
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
 const SUPABASE_URL="https://tjlyxxxzbnqalxyiilbo.supabase.co";
+
 const SUPABASE_KEY="sb_publishable_XkpEI_Y_YD57ooY6XtVT0Q_Kc08ohTv";
+
 const hasSupabase=!!window.supabase;
-const sb=hasSupabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
-let D={intro:"1.EH je mali razred s 9 učenika cvjećara i poljoprivrednih gospodarstvenika.",rules:[],hw:[],news:[],e:null,h:null};
+
+const sb=hasSupabase
+?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+:null;
+
+let D={
+intro:"1.EH je mali razred s 9 učenika cvjećara i poljoprivrednih gospodarstvenika.",
+rules:[],
+hw:[],
+news:[],
+e:null,
+h:null,
+gallery:[]
+};
+
 const $=id=>document.getElementById(id);
-const esc=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function go(x){document.querySelectorAll('.page').forEach(el=>el.classList.add('hidden'));const el=$(x);if(el)el.classList.remove('hidden');renderAdmin();}
-async function load(){if(!sb){render();return;}const q=await sb.from('site_data').select('*');if(q.error){console.error(q.error);render();return;}for(const r of q.data||[]){try{if(r.key==='intro')D.intro=r.value;if(r.key==='rules')D.rules=JSON.parse(r.value||'[]');if(r.key==='hw')D.hw=JSON.parse(r.value||'[]');if(r.key==='news')D.news=JSON.parse(r.value||'[]');if(r.key==='e')D.e=r.value;if(r.key==='h')D.h=r.value;}catch(e){console.error(e)}}render();}
-async function put(k,v){if(!sb){alert('Supabase se nije učitao. Otvori stranicu preko interneta/servera, ne samo kao datoteku.');return false;}const q=await sb.from('site_data').upsert({key:k,value:v},{onConflict:'key'});if(q.error){alert(q.error.message);return false;}return true;}
-function render(){ $('intro').textContent=D.intro; $('introEdit').value=D.intro; $('e').innerHTML=D.e?`<img src="${D.e}" alt="Raspored 1.E">`:'Raspored još nije dodan.'; $('h').innerHTML=D.h?`<img src="${D.h}" alt="Raspored 1.H">`:'Raspored još nije dodan.'; $('rules').innerHTML=D.rules.map((x,i)=>`<p>${i+1}. ${esc(x)}</p>`).join('')||'Nema pravila.'; $('hw').innerHTML=D.hw.map(x=>`<div class="card"><b>${esc(x.t)}</b><br>${esc(x.x)}</div>`).join('')||'Nema domaće zadaće.'; $('news').innerHTML=D.news.map(x=>`<div class="card"><b>${esc(x.t)}</b><br>${esc(x.x)}</div>`).join('')||'Nema obavijesti.'; renderAdmin();}
-function renderAdmin(){const ok=sessionStorage.getItem('eh')==='1';$('login').classList.toggle('hidden',ok);$('panel').classList.toggle('hidden',!ok);$('ar').innerHTML=D.rules.map((x,i)=>`<p>${esc(x)} <button type="button" onclick="delRule(${i})">Obriši</button></p>`).join('');$('ah').innerHTML=D.hw.map((x,i)=>`<p>${esc(x.t)} <button type="button" onclick="delHw(${i})">Obriši</button></p>`).join('');$('an').innerHTML=D.news.map((x,i)=>`<p>${esc(x.t)} <button type="button" onclick="delNews(${i})">Obriši</button></p>`).join('');}
-function login(){const u=$('u').value.trim(),p=$('p').value;if(u==='admin'&&p==='12345'){sessionStorage.setItem('eh','1');$('msg').textContent='';renderAdmin();}else $('msg').textContent='Pogrešna prijava.';}
-function logout(){sessionStorage.removeItem('eh');renderAdmin();}
-async function saveIntro(){D.intro=$('introEdit').value.trim();if(await put('intro',D.intro))render();}
-async function addRule(){const x=$('rt').value.trim();if(!x)return;D.rules.push(x);if(await put('rules',JSON.stringify(D.rules))){$('rt').value='';render();}}
-async function delRule(i){D.rules.splice(i,1);if(await put('rules',JSON.stringify(D.rules)))render();}
-async function addHw(){const t=$('ht').value.trim(),x=$('hx').value.trim();if(!t&&!x)return;D.hw.push({t,x});if(await put('hw',JSON.stringify(D.hw))){$('ht').value='';$('hx').value='';render();}}
-async function delHw(i){D.hw.splice(i,1);if(await put('hw',JSON.stringify(D.hw)))render();}
-async function addNews(){const t=$('nt').value.trim(),x=$('nx').value.trim();if(!t&&!x)return;D.news.push({t,x});if(await put('news',JSON.stringify(D.news))){$('nt').value='';$('nx').value='';render();}}
-async function delNews(i){D.news.splice(i,1);if(await put('news',JSON.stringify(D.news)))render();}
-async function addSchedules(){const a=$('fe').files[0],b=$('fh').files[0];if(!a&&!b){$('up').textContent='Odaberi barem jednu sliku.';return;}if([a,b].some(x=>x&&x.size>20*1024*1024)){$('up').textContent='Slika je veća od 20 MB.';return;}if(!sb){$('up').textContent='Supabase se nije učitao.';return;}$('up').textContent='Učitavanje...';for(const [f,k] of [[a,'e'],[b,'h']])if(f){const path=k+'-'+Date.now()+'-'+f.name.replace(/[^a-z0-9.]/gi,'_');const q=await sb.storage.from('schedules').upload(path,f,{upsert:true});if(q.error){$('up').textContent=q.error.message;return;}const url=sb.storage.from('schedules').getPublicUrl(path).data.publicUrl;if(!(await put(k,url)))return;D[k]=url;}$('fe').value='';$('fh').value='';$('up').textContent='Raspored je dodan.';render();}
-window.go=go;window.login=login;window.logout=logout;window.saveIntro=saveIntro;window.addRule=addRule;window.delRule=delRule;window.addHw=addHw;window.delHw=delHw;window.addNews=addNews;window.delNews=delNews;window.addSchedules=addSchedules;
+
+const esc=x=>String(x).replace(
+/[&<>"']/g,
+c=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[c])
+);
+
+function go(x){
+
+document.querySelectorAll('.page')
+.forEach(el=>el.classList.add('hidden'));
+
+const el=$(x);
+
+if(el)el.classList.remove('hidden');
+
+renderAdmin();
+
+}
+
+async function load(){
+
+if(!sb){
+render();
+return;
+}
+
+const q=await sb.from('site_data').select('*');
+
+if(q.error){
+console.error(q.error);
+render();
+return;
+}
+
+for(const r of q.data||[]){
+
+try{
+
+if(r.key==='intro')
+D.intro=r.value;
+
+if(r.key==='rules')
+D.rules=JSON.parse(r.value||'[]');
+
+if(r.key==='hw')
+D.hw=JSON.parse(r.value||'[]');
+
+if(r.key==='news')
+D.news=JSON.parse(r.value||'[]');
+
+if(r.key==='e')
+D.e=r.value;
+
+if(r.key==='h')
+D.h=r.value;
+
+if(r.key==='gallery')
+D.gallery=JSON.parse(r.value||'[]');
+
+}catch(e){
+console.error(e);
+}
+
+}
+
+render();
+
+}
+
+async function put(k,v){
+
+if(!sb){
+
+alert(
+'Supabase se nije učitao. Otvori stranicu preko interneta/servera.'
+);
+
+return false;
+
+}
+
+const q=await sb
+.from('site_data')
+.upsert(
+{key:k,value:v},
+{onConflict:'key'}
+);
+
+if(q.error){
+
+alert(q.error.message);
+
+return false;
+
+}
+
+return true;
+
+}
+
+function render(){
+
+$('intro').textContent=D.intro;
+
+$('introEdit').value=D.intro;
+
+$('e').innerHTML=D.e
+?`<img src="${D.e}" alt="Raspored 1.E">`
+:'Raspored još nije dodan.';
+
+$('h').innerHTML=D.h
+?`<img src="${D.h}" alt="Raspored 1.H">`
+:'Raspored još nije dodan.';
+
+$('rules').innerHTML=
+D.rules.map(
+(x,i)=>`<p>${i+1}. ${esc(x)}</p>`
+).join('')
+||'Nema pravila.';
+
+$('hw').innerHTML=
+D.hw.map(
+x=>`
+<div class="card">
+<b>${esc(x.t)}</b>
+<br>
+${esc(x.x)}
+</div>
+`
+).join('')
+||'Nema domaće zadaće.';
+
+$('news').innerHTML=
+D.news.map(
+x=>`
+<div class="card">
+<b>${esc(x.t)}</b>
+<br>
+${esc(x.x)}
+</div>
+`
+).join('')
+||'Nema obavijesti.';
+
+renderGallery();
+
+renderAdmin();
+
+}
+
+function renderGallery(){
+
+if(!D.gallery.length){
+
+$('gallery').innerHTML='Galerija je prazna.';
+
+return;
+
+}
+
+$('gallery').innerHTML=
+D.gallery.map(
+(x,i)=>`
+<div class="gallery-item">
+<img src="${x.url}" alt="Fotografija ${i+1}">
+</div>
+`
+).join('');
+
+}
+
+function renderAdmin(){
+
+const ok=sessionStorage.getItem('eh')==='1';
+
+$('login').classList.toggle('hidden',ok);
+
+$('panel').classList.toggle('hidden',!ok);
+
+$('ar').innerHTML=
+D.rules.map(
+(x,i)=>
+`<p>${esc(x)}
+<button type="button" onclick="delRule(${i})">
+Obriši
+</button>
+</p>`
+).join('');
+
+$('ah').innerHTML=
+D.hw.map(
+(x,i)=>
+`<p>${esc(x.t)}
+<button type="button" onclick="delHw(${i})">
+Obriši
+</button>
+</p>`
+).join('');
+
+$('an').innerHTML=
+D.news.map(
+(x,i)=>
+`<p>${esc(x.t)}
+<button type="button" onclick="delNews(${i})">
+Obriši
+</button>
+</p>`
+).join('');
+
+if($('adminGallery')){
+
+$('adminGallery').innerHTML=
+D.gallery.map(
+(x,i)=>
+`
+<div style="margin:12px 0">
+<img src="${x.url}" style="max-width:200px">
+<br>
+<button type="button" onclick="delGallery(${i})">
+🗑️ Obriši fotografiju
+</button>
+</div>
+`
+).join('');
+
+}
+
+}
+
+function login(){
+
+const u=$('u').value.trim();
+
+const p=$('p').value;
+
+if(u==='admin'&&p==='12345'){
+
+sessionStorage.setItem('eh','1');
+
+$('msg').textContent='';
+
+renderAdmin();
+
+}else{
+
+$('msg').textContent='Pogrešna prijava.';
+
+}
+
+}
+
+function logout(){
+
+sessionStorage.removeItem('eh');
+
+renderAdmin();
+
+}
+
+async function saveIntro(){
+
+D.intro=$('introEdit').value.trim();
+
+if(await put('intro',D.intro))
+render();
+
+}
+
+async function addRule(){
+
+const x=$('rt').value.trim();
+
+if(!x)return;
+
+D.rules.push(x);
+
+if(await put('rules',JSON.stringify(D.rules))){
+
+$('rt').value='';
+
+render();
+
+}
+
+}
+
+async function delRule(i){
+
+D.rules.splice(i,1);
+
+if(await put('rules',JSON.stringify(D.rules)))
+render();
+
+}
+
+async function addHw(){
+
+const t=$('ht').value.trim();
+
+const x=$('hx').value.trim();
+
+if(!t&&!x)return;
+
+D.hw.push({t,x});
+
+if(await put('hw',JSON.stringify(D.hw))){
+
+$('ht').value='';
+
+$('hx').value='';
+
+render();
+
+}
+
+}
+
+async function delHw(i){
+
+D.hw.splice(i,1);
+
+if(await put('hw',JSON.stringify(D.hw)))
+render();
+
+}
+
+async function addNews(){
+
+const t=$('nt').value.trim();
+
+const x=$('nx').value.trim();
+
+if(!t&&!x)return;
+
+D.news.push({t,x});
+
+if(await put('news',JSON.stringify(D.news))){
+
+$('nt').value='';
+
+$('nx').value='';
+
+render();
+
+}
+
+}
+
+async function delNews(i){
+
+D.news.splice(i,1);
+
+if(await put('news',JSON.stringify(D.news)))
+render();
+
+}
+
+async function addSchedules(){
+
+const a=$('fe').files[0];
+
+const b=$('fh').files[0];
+
+if(!a&&!b){
+
+$('up').textContent=
+'Odaberi barem jednu sliku.';
+
+return;
+
+}
+
+if(
+[a,b].some(
+x=>x&&x.size>20*1024*1024
+)
+){
+
+$('up').textContent=
+'Slika je veća od 20 MB.';
+
+return;
+
+}
+
+if(!sb){
+
+$('up').textContent=
+'Supabase se nije učitao.';
+
+return;
+
+}
+
+$('up').textContent='Učitavanje...';
+
+for(
+const [f,k]
+of [[a,'e'],[b,'h']]
+){
+
+if(f){
+
+const path=
+k+'-'+Date.now()+'-'+
+f.name.replace(
+/[^a-z0-9.]/gi,
+'_'
+);
+
+const q=
+await sb.storage
+.from('schedules')
+.upload(
+path,
+f,
+{upsert:true}
+);
+
+if(q.error){
+
+$('up').textContent=
+q.error.message;
+
+return;
+
+}
+
+const url=
+sb.storage
+.from('schedules')
+.getPublicUrl(path)
+.data.publicUrl;
+
+if(!(await put(k,url)))
+return;
+
+D[k]=url;
+
+}
+
+}
+
+$('fe').value='';
+
+$('fh').value='';
+
+$('up').textContent=
+'Raspored je dodan.';
+
+render();
+
+}
+
+async function addGallery(){
+
+const files=
+Array.from(
+$('galleryFiles').files
+);
+
+if(!files.length){
+
+$('galleryUp').textContent=
+'Odaberi barem jednu fotografiju.';
+
+return;
+
+}
+
+if(
+files.some(
+f=>f.size>20*1024*1024
+)
+){
+
+$('galleryUp').textContent=
+'Jedna od fotografija je veća od 20 MB.';
+
+return;
+
+}
+
+if(!sb){
+
+$('galleryUp').textContent=
+'Supabase se nije učitao.';
+
+return;
+
+}
+
+$('galleryUp').textContent=
+'Učitavanje fotografija...';
+
+for(const file of files){
+
+const path=
+'gallery-'+
+Date.now()+'-'+
+Math.random().toString(36).slice(2)+
+'-'+
+file.name.replace(
+/[^a-z0-9.]/gi,
+'_'
+);
+
+const q=
+await sb.storage
+.from('gallery')
+.upload(
+path,
+file,
+{upsert:false}
+);
+
+if(q.error){
+
+$('galleryUp').textContent=
+q.error.message;
+
+return;
+
+}
+
+const url=
+sb.storage
+.from('gallery')
+.getPublicUrl(path)
+.data.publicUrl;
+
+D.gallery.push({
+url:url,
+path:path
+});
+
+}
+
+if(
+await put(
+'gallery',
+JSON.stringify(D.gallery)
+)
+){
+
+$('galleryFiles').value='';
+
+$('galleryUp').textContent=
+'Fotografije su dodane u galeriju.';
+
+render();
+
+}
+
+}
+
+async function delGallery(i){
+
+if(!confirm('Obrisati ovu fotografiju?'))
+return;
+
+const item=D.gallery[i];
+
+if(!item)
+return;
+
+const q=
+await sb.storage
+.from('gallery')
+.remove([item.path]);
+
+if(q.error){
+
+alert(q.error.message);
+
+return;
+
+}
+
+D.gallery.splice(i,1);
+
+if(
+await put(
+'gallery',
+JSON.stringify(D.gallery)
+)
+){
+
+render();
+
+}
+
+}
+
+window.go=go;
+window.login=login;
+window.logout=logout;
+window.saveIntro=saveIntro;
+window.addRule=addRule;
+window.delRule=delRule;
+window.addHw=addHw;
+window.delHw=delHw;
+window.addNews=addNews;
+window.delNews=delNews;
+window.addSchedules=addSchedules;
+window.addGallery=addGallery;
+window.delGallery=delGallery;
+
 load();
-</script></body></html>
+
+</script>
+
+</body>
+</html>
