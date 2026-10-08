@@ -86,7 +86,9 @@ img{max-width:100%;border-radius:10px}
 </section>
 <div class="card">
   <h2>Raspored zvona</h2>
-  <p>Raspored zvona još nije dodan.</p>
+  <div id="zvona">
+  Raspored zvona još nije dodan.
+</div>
 </div>
 <section id="raspored" class="page hidden">
 <div class="card">
@@ -163,7 +165,15 @@ Galerija je prazna.
 <h3>📅 Raspored</h3>
 
 <p>Do 20 MB po slici.</p>
+<div class="card">
+  <h3>Raspored zvona</h3>
 
+  <input id="fbell" type="file" accept="image/*">
+
+  <button onclick="addBell()">Dodaj raspored zvona</button>
+
+  <p id="bellUp"></p>
+</div>
 <input id="fe" type="file" accept="image/*">
 <input id="fh" type="file" accept="image/*">
 
@@ -247,9 +257,8 @@ hw:[],
 news:[],
 e:null,
 h:null,
-gallery:[]
-};
-
+gallery:[],
+bell:null,
 const $=id=>document.getElementById(id);
 
 const esc=x=>String(x).replace(
@@ -315,7 +324,8 @@ D.h=r.value;
 
 if(r.key==='gallery')
 D.gallery=JSON.parse(r.value||'[]');
-
+if(r.key==='bell')
+D.bell=r.value;
 }catch(e){
 console.error(e);
 }
@@ -370,7 +380,9 @@ $('e').innerHTML=D.e
 $('h').innerHTML=D.h
 ?`<img src="${D.h}" alt="Raspored 1.H">`
 :'Raspored još nije dodan.';
-
+$('zvona').innerHTML=D.bell
+?`<img src="${D.bell}" alt="Raspored zvona">`
+:'Raspored zvona još nije dodan.';
 $('rules').innerHTML=
 D.rules.map(
 (x,i)=>`<p>${i+1}. ${esc(x)}</p>`
@@ -612,6 +624,55 @@ D.news.splice(i,1);
 if(await put('news',JSON.stringify(D.news)))
 render();
 
+}async function addBell(){
+
+  const f=$('fbell').files[0];
+
+  if(!f){
+    $('bellUp').textContent='Odaberi sliku rasporeda zvona.';
+    return;
+  }
+
+  if(f.size>20*1024*1024){
+    $('bellUp').textContent='Slika je veća od 20 MB.';
+    return;
+  }
+
+  if(!sb){
+    $('bellUp').textContent='Supabase se nije učitao.';
+    return;
+  }
+
+  $('bellUp').textContent='Učitavanje...';
+
+  const path=
+    'bell-'+Date.now()+'-'+
+    f.name.replace(/[^a-z0-9.]/gi,'_');
+
+  const q=await sb.storage
+    .from('schedules')
+    .upload(path,f,{upsert:true});
+
+  if(q.error){
+    $('bellUp').textContent=q.error.message;
+    return;
+  }
+
+  const url=
+    sb.storage
+    .from('schedules')
+    .getPublicUrl(path)
+    .data.publicUrl;
+
+  if(!(await put('bell',url))) return;
+
+  D.bell=url;
+
+  $('fbell').value='';
+
+  $('bellUp').textContent='Raspored zvona je dodan.';
+
+  render();
 }
 
 async function addSchedules(){
@@ -862,6 +923,7 @@ window.delHw=delHw;
 window.addNews=addNews;
 window.delNews=delNews;
 window.addSchedules=addSchedules;
+  window.addBell=addBell;
 window.addGallery=addGallery;
 window.delGallery=delGallery;
 
